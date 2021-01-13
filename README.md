@@ -1,6 +1,6 @@
 # README
 
-Citaions
+Citations
 
 Setting up the AWS CLI
 https://docs.aws.amazon.com/transcribe/latest/dg/setup-asc-awscli.html
