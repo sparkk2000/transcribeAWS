@@ -1,0 +1,8 @@
+{
+  "TranscriptionJobName": "ringleawstest",
+  "LanguageCode": "en-US",
+  "MediaFormat": "mp4",
+  "Media": {
+    "MediaFileUri": "s3://awsclitrial/ringleT0.m4a"
+  }
+}

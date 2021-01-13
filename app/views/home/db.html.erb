@@ -1,0 +1,34 @@
+<h1>AWS formatted to Zoom</h1>
+<h2 id="notice"><%= notice %></h2>
+
+<p>The biggest problem here is that, while we can differentiate speakers, we cannot know which speaker is the tutor and which is the student</p>
+
+<table id="main" class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th>JOB ID</th>
+      <th>Start Time</th>
+      <th>Status</th>
+      <th>See Json</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @joblist .each do |row| %>
+      <tr>
+        <td><%= row["job_id"] %></td>
+        <td><%= row["start_time"] %></td>
+        <td >
+            <%= row["status"]%>
+        </td> 
+        <td >
+          <% if row["status"]=="COMPLETED" %>
+              <%= link_to 'link', home_cmp_path(:jobid => row["job_id"], :userid => row["user_id"], :tutorid => row["tutor_id"], :recom => row["recom"], :aud => row["aud"]), class:"btn btn-outline-dark" %>
+          <% end %>
+        </td> 
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+

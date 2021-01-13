@@ -1,0 +1,20 @@
+<h1>AWS formatted to Zoom</h1>
+
+
+<%= form_with(url: '/home/create', method: 'get') do%>
+    <p>Enter Lesson ID</p>
+    <%= text_field_tag(:LID, nil, placeholder: 3413231423)%>
+    <p></p>
+    <p>Enter Student ID</p>
+    <%= text_field_tag(:SID, nil, placeholder: "sehan324")%>
+    <p></p>
+    <p>Enter Tutor ID</p>
+    <%= text_field_tag(:TID, nil, placeholder: "ringle223")%>
+    <p></p>
+    <p>Enter File Name</p>
+    <%= text_field_tag(:filename, nil, placeholder: "ringleT0a.mp4")%>
+    <p></p>
+    </br>
+    <%= submit_tag("Create") %>
+<% end %>
+

@@ -1,0 +1,32 @@
+<h1>AWS formatted to Zoom</h1>
+<p> <%= @ret %> </p>
+
+<%= link_to 'Create More', root_path, class:"navbar-brand" %>
+
+<% if @analy.present? %>
+<table id="main" class="table table-striped table-hover table-bordered">
+  <thead class="table-dark">
+    <tr>
+      <th></th>
+      <th>ringleT0</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% (0..2).each do |rowlabel| %>
+      <tr>
+        <td><%= ["Avg. Word Duration r0", "Avg. Word Duration r1", "Predicted student based on AWD"][rowlabel] %></td>
+        
+          <td style="color: <%= (rowlabel>1) ? 'red' : '' %>;" >
+            <%=[@analy[0], @analy[1], (@analy[0]> @analy[1]) ? 0: 1][rowlabel]%>
+          </td> 
+        
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<% if @data.present? %>
+  <pre><%= @data %></pre>
+<% end %>
