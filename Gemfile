@@ -55,6 +55,8 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+gem 'therubyracer', platforms: :ruby
+
 gem "googl", "~> 0.7.1"
 
 gem "bitly", "~> 2.0"
