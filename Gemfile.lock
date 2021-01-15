@@ -242,7 +242,7 @@ DEPENDENCIES
   ed25519 (~> 1.2)
   jbuilder (~> 2.7)
   listen (~> 3.3)
-  mysql2 (~> 0.5.2)
+  mysql2
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.0)
