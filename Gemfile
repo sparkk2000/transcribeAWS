@@ -69,3 +69,4 @@ gem 'bcrypt_pbkdf', '~> 1.0'
 
 gem 'mysql2'
 
+gem 'spring'
