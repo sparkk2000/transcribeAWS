@@ -24,4 +24,4 @@ production:
   <<: *default
   database: db/production.sqlite3
   username: deploy
-  password: Heavenisnear0830!
+  password: Rails.application.credentials.dig(:production, :db_password)
