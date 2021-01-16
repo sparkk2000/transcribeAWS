@@ -1,8 +1,6 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.15.0"
 
-set :application, "my_app_name"
-set :repo_url, "git@example.com:me/my_repo.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -44,7 +42,21 @@ set :repo_url, "https://github.com/sparkk2000/deploy.git"
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
 
+set :linked_files, %w{config/database.yml}
+
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
 
 # Only keep the last 5 releases to save disk space
 set :keep_releases, 5
+
+namespace :deploy do
+    desc 'Restart application'
+    task :restart do
+      on roles(:app), in: :sequence, wait: 5 do
+        execute :touch, release_path.join('tmp/restart.txt')
+      end
+    end
+  
+    after :publishing, 'deploy:restart'
+    after :finishing, 'deploy:cleanup'
+  end
