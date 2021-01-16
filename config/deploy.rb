@@ -42,7 +42,7 @@ set :repo_url, "https://github.com/sparkk2000/deploy.git"
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
 
-set :linked_files, %w{config/database.yml}
+# set :linked_files, %w{config/database.yml}
 
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
 
