@@ -1,0 +1,91 @@
+<h1>AWS Transcribe Converter</h1>
+
+
+<% if @analy==true %>
+    <pre><%= "현재 레이블링이 잘 돼 있는 것 같습니다. 검토해 보세요!"%></pre>
+<% end %>
+
+<% if @analy== false %>
+    <pre><%= "현재 튜터랑 학생이 바뀌어 있는 것 같습니다. 검토해 보세요!"%></pre>
+<% end %>
+
+</br>
+
+<audio id="myaudio" src= "<%= asset_path(@aud) %>" type="audio/x-m4a" controls> 
+</audio>
+
+</br>
+</br>
+
+<script type="text/javascript">
+    function settime(time){
+    var audio= document.getElementById("myaudio");
+    audio.currentTime= time;
+    audio.play();
+    }
+    function stop(){
+    var audio= document.getElementById("myaudio");
+    audio.pause();
+    }
+</script>
+
+<table id="main" style="width: 100%" class="table table-striped table-hover table-bordered">
+    <colgroup>
+        <col span="1" style="width: 15%;">
+        <col span="1" style="width: 85%;">
+    </colgroup>
+  <thead class="table-dark">
+    <tr>
+      <th>Options</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @data.each do |row| %>
+      <tr>
+        <td >
+            <% if row[:role]== 1 %>
+                <%= link_to '튜터로 바꾸기', home_change_path(:jobid => @job_id), class: "btn btn-outline-dark disabled" %>
+                    </br>
+                    </br>
+                <%= link_to '학생으로 바꾸기', home_change_path(:jobid => @job_id), class: "btn btn-outline-dark" %>
+            <% end %>
+            <% if row[:role]== 0 %>
+                <%= link_to '튜터로 바꾸기', home_change_path(:jobid => @job_id), class: "btn btn-outline-dark" %>
+                    </br>   
+                    </br>
+                <%= link_to '학생으로 바꾸기', home_change_path(:jobid => @job_id), class: "btn btn-outline-dark disabled" %>
+            <% end %>
+            </br>
+            </br>
+            <div class="btn-group">
+                <button onclick="settime(<%=
+                    Time.strptime(row[:start_time], "%T.%L").strftime("%M").to_i * 60 + Time.strptime(row[:start_time], "%T.%L").strftime("%S").to_i
+                    %>)" class="btn btn-outline-dark"
+                    >
+                    <%= "play" %>
+                </button>
+
+                <button onclick="stop()" class="btn btn-outline-dark">
+                    <%= "stop" %>
+                </button>
+            </div>
+
+        <td>
+            <%= "role: #{(row[:role]== 0 ? "student" : "tutor")}" %>
+            </br>
+            </br>
+            <%= "id: #{row[:user_id]}" %>
+            </br>
+            </br>
+            <%= "start time: #{row[:start_time]}" %>
+            </br>
+            </br>
+            <%= "content: #{row[:content]}" %>
+            </br>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

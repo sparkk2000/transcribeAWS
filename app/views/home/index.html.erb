@@ -1,7 +1,7 @@
 <h1>AWS Transcribe Converter</h1>
 
 
-<%= form_with(url: '', method: 'get') do%>
+<%= form_with(url: '/home/create', method: 'get') do%>
     <p>Enter Lesson ID</p>
     <%= text_field_tag(:LID, nil, placeholder: 3413231423)%>
     <p></p>
@@ -17,3 +17,4 @@
     </br>
     <%= submit_tag("Create") %>
 <% end %>
+

@@ -37,7 +37,7 @@ lock "~> 3.15.0"
 # set :ssh_options, verify_host_key: :secure
 
 set :application, "deploy"
-set :repo_url, "https://github.com/sparkk2000/deploy.git"
+set :repo_url, "https://github.com/sparkk2000/transcribeAWS.git"
 
 # Deploy to the user's home directory
 set :deploy_to, "/home/deploy/#{fetch :application}"
