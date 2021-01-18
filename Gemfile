@@ -69,6 +69,12 @@ gem 'bcrypt_pbkdf', '~> 1.0'
 
 gem 'mysql2'
 
-gem 'spring'
-
 gem 'listen', '~> 3.3'
+
+gem 'pry'
+
+gem 'nokogiri'
+
+gem 'httparty'
+
+gem 'kimurai'

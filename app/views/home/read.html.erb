@@ -1,0 +1,35 @@
+
+<p id="notice"><%= notice %></p>
+
+<h1>Tutor Scheduler</h1>
+
+
+<p>Options</p>
+ 
+<%= form_with(url: '/home/read', method: 'get') do%>
+    <%= select_tag(:who, 
+        grouped_options_for_select([
+            ['US',
+            [['Salli, Female', 'Salli'],
+            ['Joanna, Female', 'Joanna'],
+            ['Matthew, Male', 'Mathew']]],
+            ['UK',
+            [['Amy, Female', 'Amy'],
+            ['Emma, Female', 'Emma'],
+            ['Brian, Male', 'Brian']]],
+            ['Austrailia',
+            [['Nicole, Female', 'Nicole'],
+            ['Russel, Male', 'Russel']]]
+        ], @data), onchange: "this.form.submit();", id: "who")
+    %>
+<% end %>  
+
+</br>
+</br>
+
+<% if @success== true %>
+    
+    <audio id="myaudio" src= "<%= asset_path("polly.mp3") %>" type="audio/mp3" controls> 
+    </audio>
+<% end %>
+

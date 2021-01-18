@@ -33,3 +33,6 @@ Code
 
     Description
     Upload => Call Transcribe => Check Status => Copy Json and Format to ZOOM on call
+
+Gems
+To get the script for polly, we need pry, nokogiri, HTTParty

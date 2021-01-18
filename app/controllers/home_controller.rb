@@ -1,5 +1,6 @@
 
 
+
 class HomeController < ApplicationController
 
   def bucketcontents(buck)
@@ -259,4 +260,40 @@ class HomeController < ApplicationController
     end
 
   end
+  #flip roles
+
+  def read
+
+    if params[:who].present?
+      who = params[:who]
+    else
+      who = "Joanna"
+    end
+    
+    scripta = "In most major cities around the world these days, it's easy to find people riding motorized boards down the street. In the past, most people chose to walk short distances. Now, the Uber-style sharing of electric scooters is quickly becoming a part of the younger generation's transportation options.
+  
+  
+    Users of personal mobility devices often travel on the sidewalk, not on the road or in the bikeways, which causes many problems. In many cities, the number of electric scooters that collide with pedestrians is increasing. More and more accidents between mobility device riders and moving vehicles, or riders tripping themselves are reported. Recent reports of fatal accidents have deepened public anxiety.
+    
+    
+    Many municipal and central governments have begun to enact regulations on electric scooters, enforcing tighter controls like designating speed limits. Some countries have regulations that use of personal mobility devices are only for adults with a valid vehicle or motorcycle license. Or they restrict riding to roads and bike lanes only, not on walkways, in defined locations that will not pose a danger to pedestrians. In some cities, “hiring” electric scooters is defined as illegal, depriving the service providers of entire markets.
+    
+    
+    Rideshare users claim the right to “travel.” Conversely, pedestrians demand their right to travel “safely.” At the same time, car drivers on the road embody the right to transportation without worrying about different types of wheeled devices.
+    
+    What do you think about personal mobility devices, such as electric scooters?
+    "
+    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scripta}", "#{Rails.root}/app/assets/audio/polly.mp3"))
+    
+    
+
+    @success = ret
+    @data = who
+
+    
+  end
+
+
+
+
 end
