@@ -321,12 +321,18 @@ class HomeController < ApplicationController
       scr = script1
     end
     
-    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scr}", "#{Rails.root}/app/assets/audio/#{who}#{params[:script]}.mp3"))
     
+    if Dir.entries("#{Rails.root}/app/assets/audio/").include? "#{who}#{params[:script]}.mp3"
+      ret = true
+    else
+      ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scr}", "#{Rails.root}/app/assets/audio/#{who}#{params[:script]}.mp3"))
+    end
+
 
     @success = ret
     @data = who
     @str = scr
+    @list = Dir.entries("#{Rails.root}/app/assets/audio/")
     @scrnum = params[:script]
     @filename = "#{who}#{params[:script]}"
     
