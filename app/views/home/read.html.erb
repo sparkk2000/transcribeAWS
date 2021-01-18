@@ -1,12 +1,18 @@
 
 <p id="notice"><%= notice %></p>
 
-<h1>Tutor Scheduler</h1>
+<h1>AWS Polly QA</h1>
 
-
-<p>Options</p>
- 
 <%= form_with(url: '/home/read', method: 'get') do%>
+    <p>Script</p>
+    <%= select_tag(:script, 
+        options_for_select([
+            ['script1', 1],
+            ['script2', 2],
+            ['script3', 3],
+    ], @scrnum), onchange: "this.form.submit();", id: "script")
+    %>
+    <p>Options</p>
     <%= select_tag(:who, 
         grouped_options_for_select([
             ['US',
@@ -19,11 +25,11 @@
             ['Brian, Male', 'Brian']]],
             ['Austrailia',
             [['Nicole, Female', 'Nicole'],
-            ['Russel, Male', 'Russel']]]
+            ['Russell, Male', 'Russell']]]
         ], @data), onchange: "this.form.submit();", id: "who")
     %>
 <% end %>  
-
+ 
 </br>
 </br>
 
@@ -31,5 +37,9 @@
     
     <audio id="myaudio" src= "<%= asset_path("polly.mp3") %>" type="audio/mp3" controls> 
     </audio>
+    </br>
+    </br>
+    </br>
+    <p><%=@str%></p>
 <% end %>
 

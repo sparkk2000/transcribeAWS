@@ -270,7 +270,7 @@ class HomeController < ApplicationController
       who = "Joanna"
     end
     
-    scripta = "In most major cities around the world these days, it's easy to find people riding motorized boards down the street. In the past, most people chose to walk short distances. Now, the Uber-style sharing of electric scooters is quickly becoming a part of the younger generation's transportation options.
+    script1 = "In most major cities around the world these days, it's easy to find people riding motorized boards down the street. In the past, most people chose to walk short distances. Now, the Uber-style sharing of electric scooters is quickly becoming a part of the younger generation's transportation options.
   
   
     Users of personal mobility devices often travel on the sidewalk, not on the road or in the bikeways, which causes many problems. In many cities, the number of electric scooters that collide with pedestrians is increasing. More and more accidents between mobility device riders and moving vehicles, or riders tripping themselves are reported. Recent reports of fatal accidents have deepened public anxiety.
@@ -283,13 +283,53 @@ class HomeController < ApplicationController
     
     What do you think about personal mobility devices, such as electric scooters?
     "
-    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scripta}", "#{Rails.root}/app/assets/audio/polly.mp3"))
+
+    script2 = "The year 2020 was when a pandemic put a stop to everyone's ordinary lives. Inevitably, the industries most closely related to daily living were hit hard. Deserted airports and grounded fleets have caused colossal losses in aviation, travel, and hospitality businesses worldwide. Strings of infections in indoor spaces, including fitness centers, concert halls, private tutoring academies, restaurants, and bars, have vaporized more than 80 percent of offline business revenues. Consequently, millions of people around the world who used to work in those segments lost their jobs and have been forced to work on temporary terms, such as in delivery services, barely managing unstable daily life.
+
+
+    In late 2020, pharmaceutical companies in the United States, the United Kingdom, China, and Russia finally began supplying vaccines for the unprecedented health crisis. Global pharmaceutical giants such as Pfizer, Jansen (Johnson and Johnson) and AstraZeneca, and Boston-based biotech company Moderna, have announced their success in developing vaccines with a 70 to 95 percent efficacy rate. Governments around the world have swiftly approved use, which was an extraordinary move itself, and begun giving shots to their people.
+    
+    
+    Returning to the normal days as soon as possible is what people around the globe most look forward to now. It all depends on whether or not the vaccines currently in dissemination can effectively prevent the ever-spreading coronavirus. What if people who get the shots still find themselves infected? What if there is a new coronavirus variant that renders the vaccine inefficacious? Then the whole world would have to be locked down again. Furthermore, even with the assumption that the current vaccines are uniformly effective, it is also crucial to answer whether or not the production, distribution, and actual roll-out of the vaccine on a massive scale are possible.
+    
+    
+    In 2021, will we be able to restore our daily lives after vaccinating?
+    "
+    
+    script3 = "The number of pets is increasing rapidly around the world. According to a study conducted in 22 countries, more than half of the world’s population owns pets. Countries with high percentage of households with pets were largely concentrated in the Americas, such as Argentina (80%), Mexico (80%), Brazil (75%), Russia (73%), and the U.S. (70%). Asian countries such as Korea (31%), Hong Kong (35%), and Japan (37%) showed relatively less interest.
+
+
+    Pet owners prefer dogs (33%), cats (23%), fish (12%), and birds (6%) in this order. That said, cat adoption rates were higher than that of dogs in Russia, Sweden, Belgium, France, and Germany. There are also twice as many pet cats than dogs in Russia, indicating differences in pet preference by country.
+    
+    
+    Reasons for the recent increase in the number of households with pets include declining birth rates, rising global income levels, and increased interest in animals due to images shared on social media.
+    
+    
+    However, the increase in pets is aggravating environmental destruction caused by more water and food consumption as well as related social costs and animal rights infringements. Consequently, improved awareness around the coexistence of pets and humans, legal reform, and infrastructure are urgently needed.
+    "
+
+    if params[:script].present?
+      case params[:script]
+      when '1'
+        scr = script1
+      when '2'
+        scr = script2
+      when '3'
+        scr = script3
+      end
+    else
+      scr = script1
+    end
+    
+
+    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scr}", "#{Rails.root}/app/assets/audio/polly.mp3"))
     
     
 
     @success = ret
     @data = who
-
+    @str = scr
+    @scrnum = params[:script]
     
   end
 
