@@ -34,8 +34,8 @@
 </br>
 
 <% if @success== true %>
-    
-    <audio id="myaudio" src= "<%= asset_path("polly.mp3") %>" type="audio/mp3" controls> 
+    <p><%=@success%></p>
+    <audio id="myaudio" src= "<%= asset_path("#{@filename}.mp3") %>" type="audio/mp3" controls> 
     </audio>
     </br>
     </br>

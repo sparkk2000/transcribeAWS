@@ -72,9 +72,3 @@ gem 'mysql2'
 gem 'listen', '~> 3.3'
 
 gem 'pry'
-
-gem 'nokogiri'
-
-gem 'httparty'
-
-gem 'kimurai'

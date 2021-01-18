@@ -321,15 +321,14 @@ class HomeController < ApplicationController
       scr = script1
     end
     
-
-    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scr}", "#{Rails.root}/app/assets/audio/polly.mp3"))
-    
+    ret = (system("aws", "polly", "synthesize-speech", "--output-format", "mp3", "--voice-id", "#{who}", "--text", "#{scr}", "#{Rails.root}/app/assets/audio/#{who}#{params[:script]}.mp3"))
     
 
     @success = ret
     @data = who
     @str = scr
     @scrnum = params[:script]
+    @filename = "#{who}#{params[:script]}"
     
   end
 
