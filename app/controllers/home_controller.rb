@@ -128,7 +128,7 @@ class HomeController < ApplicationController
     # my_object = Down.download(jsontrans)
     #download with down api because open uri is buggy
 
-    system("aws", "s3", "cp", "s3://ringle-transcribe-test/#{params[:jobid]}.json", "#{Rails.root}/cache/temp.json")
+    @alert = system("aws", "s3", "cp", "s3://ringle-transcribe-test/#{params[:jobid]}.json", "#{Rails.root}/cache/temp.json")
 
     my_object = File.open("#{Rails.root}/cache/temp.json","r")
     a= JSON.parse(my_object.read)
@@ -338,6 +338,132 @@ class HomeController < ApplicationController
     
   end
 
+  def rmsilence
+    user_id = params[:userid]
+    tutor_id = params[:tutorid]
+    lesson_id = params[:jobid][10..]
+    recom = params[:recom].to_i
+    aud = params[:aud]
+    # jsontrans = params[:url]
+    #jsontrans stores the uri with json file
+
+    # my_object = Down.download(jsontrans)
+    #download with down api because open uri is buggy
+
+    system("aws", "s3", "cp", "s3://ringle-transcribe-test/#{params[:jobid]}.json", "#{Rails.root}/cache/temp.json")
+
+    my_object = File.open("#{Rails.root}/cache/temp.json","r")
+    a= JSON.parse(my_object.read)
+    #Load file
+
+    punctcnt = 0 #count punctuations since punctuations are included as items in conversation but not a segment in speaker labels
+    tres = a['results']['items'] #raw data labeled per word and punctuation
+    segres = a['results']['speaker_labels']['segments'] #segments denote the item's speaker and duration
+    #fill these later with ids from app
+
+
+    cuttime = segres[0]['start_time'].to_f
+
+    rolary = []
+    #array with roles 
+
+    recomx = ((recom == 0) ? 1: 0)
+    segres.each do |what|
+      rolex = (what['speaker_label'] === 'spk_0') ? recom : recomx
+      what['items'].each do |which|
+        rolary.append(rolex)
+      end
+    end
+    #roles are in a parallel array so, extract only the roles in a different array
+    #also, punctuation dont have role labels
+
+
+    res=[]
+    #result array
+    cur = 0
+    nxt = 1
+    #indexes for tres to concat words of the same sentence and role together
+    sptime0 = 0.0
+    sptime1 = 0.0
+    #message duration / num words
+
+    while cur < tres.length()
+      ccontent = tres[cur]['alternatives'][0]['content']
+      #ccontent to be elongated, currently the first word 
+      stime = tres[cur]['start_time'].to_f-cuttime
+      #start time of first word in message
+      etime = tres[cur]['end_time'].to_f-cuttime
+      #end time first word (will be changed upon elongation of message)
+      role = rolary[cur - punctcnt]
+      #current role (punctuation count was subtracted from current index because punctuation were not given roles)
+      userid = role == 0 ? user_id : tutor_id
+      #userid depends on role
+
+      while nxt < tres.length() 
+        if (tres[nxt]['type']=='punctuation')
+          symbol = tres[nxt]['alternatives'][0]['content']
+          ccontent.concat(symbol)
+          punctcnt += 1 #remember to increment punctuation count
+          if symbol == '.' && ccontent.split(" ").size> 10
+            cur += 1
+            nxt += 1
+            break
+          end
+          #if message becomes too long, cut
+        elsif role != rolary[cur - punctcnt]
+          break
+          #if role changes, cut
+        else 
+          ccontent.concat(" "+tres[nxt]['alternatives'][0]['content'])
+          etime = tres[nxt]['end_time'].to_f-cuttime
+        end
+        cur += 1
+        nxt += 1
+      end 
+      #elongate message
+
+      res << {
+        "lesson_id": lesson_id,
+        "user_id": userid,
+        "role": role,
+        "content": ccontent,
+        "start_time": "#{Time.at(stime).utc.strftime("%T.%L")}",
+        "end_time": "#{Time.at(etime).utc.strftime("%T.%L")}"
+      }
+      #add to result array upon elongation
+      
+      if (etime-stime) > 240
+        res= []
+        cuttime = tres[cur+1]['start_time'].to_f
+      end
+
+      if (etime - stime)/ccontent.split(' ').length.to_f < 3 && res.length > 2
+        if role== 1
+          sptime1 += (etime - stime)/ccontent.split(' ').length.to_f 
+        else
+          sptime0 += (etime - stime)/ccontent.split(' ').length.to_f 
+        end
+      end
+      #add average word duration 
+
+      cur += 1
+      nxt = cur +1
+      #increment index
+
+    end
+
+    obj    = JSON.pretty_generate(res)
+    #prettify for debugging
+    analy = (sptime0/(res.length.to_f-2.0) < sptime1/(res.length.to_f-2.0)) ? 1 : 0
+    #divide by number of entries
+
+    system("ffmpeg", "-y", "-i", "#{Rails.root}/app/assets/audio/#{aud}", "-ss", "#{cuttime}", "-acodec", "copy", "#{Rails.root}/app/assets/audio/conv#{aud}")
+    @data = res
+    @analy = (analy == 0)
+    @aud = "conv#{aud}"
+    @job_id = params[:jobid]
+    @cuttime = cuttime
+  end
 
 
 

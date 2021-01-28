@@ -11,6 +11,7 @@
       <th>Start Time</th>
       <th>Status</th>
       <th>검토하기</th>
+      <th>무음 제거</th>
     </tr>
   </thead>
 
@@ -27,6 +28,11 @@
               <%= link_to 'link', home_cmp_path(:jobid => row["job_id"], :userid => row["user_id"], :tutorid => row["tutor_id"], :recom => row["recom"], :aud => row["aud"]), class:"btn btn-outline-dark" %>
           <% end %>
         </td> 
+        <td>
+        <% if row["status"]=="COMPLETED" %>
+            <%= link_to 'link', home_rmsilence_path(:jobid => row["job_id"], :userid => row["user_id"], :tutorid => row["tutor_id"], :recom => row["recom"], :aud => row["aud"]), class:"btn btn-outline-dark" %>
+        <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
